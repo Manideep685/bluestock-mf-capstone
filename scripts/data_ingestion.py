@@ -1,20 +1,21 @@
-import requests
 import pandas as pd 
-import os
+import os 
 
-def fetch_nav(scheme_code, name):
-    url = f"https://api.mfapi.in/mf/{scheme_code}"
-    response = requests.get(url)
-    data = response.json()
-    df = pd.DataFrame(data['data'])
-    df.to_csv(f"data/raw/{name}.csv", index=False)
-    print(f"{name} saved! shape: {df.shape}")
-    return df
-fetch_nav(125497,"HDFC_TOP100")
-fetch_nav(119551,"SBI_BLueschip")
-fetch_nav(120503,"ICICI_Bluechip")
-fetch_nav(118632,"Nippon_LargeCap")
-fetch_nav(119092,"Axis_Bluechip")
-fetch_nav(120841,"kotak_Bluechip")
+raw_path = "data/raw"
 
-print("All NAV data fetched successfully!")
+csv_files = [f for f in os.listdir(raw_path)if f.endswith(".csv")]
+
+for file in csv_files:
+    file_path = os.path.join (raw_path,file)
+
+    df = pd.read_csv(file_path)
+
+    print("\n"+ "="*50)
+    print(f"File : {file}")
+    print(f"shape :{df.shape}")
+    print("\n Data type")
+    print(df.dtypes)
+    print("\nFirst 5 rows")
+    print(df.head())
+
+print("\n Data Ingestion completed successfully!")
